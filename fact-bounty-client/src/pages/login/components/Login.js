@@ -2,7 +2,10 @@ import React, {Component} from 'react'
 import PropTypes          from 'prop-types'
 import {connect}          from 'react-redux'
 import classnames         from 'classnames'
-
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import compose          from 'recompose/compose'
 import Avatar           from '@material-ui/core/Avatar'
 import Button           from '@material-ui/core/Button'
@@ -56,7 +59,9 @@ class Login extends Component {
 		this.state = {
 			email: '',
 			password: '',
-			errors: {}
+			errors: {},
+			showPassword: false
+
 		}
 	}
 
@@ -81,6 +86,11 @@ class Login extends Component {
 	onChange = e => {
 		this.setState({[e.target.id]: e.target.value})
 	}
+
+	handleClickShowPassword = () => {
+        this.setState(state => ({ showPassword: !state.showPassword }));
+    };
+
 	onSubmit = e => {
 		e.preventDefault()
 		const userData = {
@@ -125,10 +135,21 @@ class Login extends Component {
 								   value={this.state.password}
 								   error={errors.password}
 								   id="password"
-								   type="password"
+								   type={this.state.showPassword ? 'text' : 'password'}
 								   className={classnames('', {
 									   invalid: errors.password || errors.passwordincorrect
-								   })}/>
+								   })}
+                                   endAdornment={
+						              <InputAdornment position="end">
+						                <IconButton
+						                  aria-label="Toggle password visibility"
+						                  onClick={this.handleClickShowPassword}
+						                >
+						                  {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+						                </IconButton>
+						              </InputAdornment>
+						            }
+								   />
 							<span className="red-text">
 									{errors.password}
 								{errors.passwordincorrect}

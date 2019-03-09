@@ -2,7 +2,10 @@ import React, {Component} from 'react'
 import PropTypes          from 'prop-types'
 import {connect}          from 'react-redux'
 import classnames         from 'classnames'
-
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import compose          from 'recompose/compose'
 import Avatar           from '@material-ui/core/Avatar'
 import Button           from '@material-ui/core/Button'
@@ -58,7 +61,9 @@ class Register extends Component {
 			email: '',
 			password: '',
 			password2: '',
-			errors: {}
+			errors: {},
+			showPassword: false,
+			showPassword2: false
 		}
 	}
 
@@ -80,6 +85,16 @@ class Register extends Component {
 	onChange = e => {
 		this.setState({[e.target.id]: e.target.value})
 	}
+
+
+	handleClickShowPassword = () => {
+        this.setState(state => ({ showPassword: !state.showPassword }));
+    };
+
+	handleClickShowPassword2 = () => {
+        this.setState(state => ({ showPassword2: !state.showPassword2 }));
+    };    
+
 	onSubmit = e => {
 		e.preventDefault()
 		const {name, email, password, password2} = this.state
@@ -145,10 +160,21 @@ class Register extends Component {
 								   value={this.state.password}
 								   error={errors.password}
 								   id="password"
-								   type="password"
+								   type={this.state.showPassword ? 'text' : 'password'}
 								   className={classnames('', {
 									   invalid: errors.password
-								   })}/>
+								   })}
+                                   endAdornment={
+						              <InputAdornment position="end">
+						                <IconButton
+						                  aria-label="Toggle password visibility"
+						                  onClick={this.handleClickShowPassword}
+						                >
+						                  {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+						                </IconButton>
+						              </InputAdornment>
+						            }
+								   />
 							<span className="red-text">{errors.password}</span>
 						</FormControl>
 
@@ -158,10 +184,21 @@ class Register extends Component {
 								   value={this.state.password2}
 								   error={errors.password2}
 								   id="password2"
-								   type="password"
+								   type={this.state.showPassword2 ? 'text' : 'password'}
 								   className={classnames('', {
 									   invalid: errors.password2
-								   })}/>
+								   })}
+                                   endAdornment={
+						              <InputAdornment position="end">
+						                <IconButton
+						                  aria-label="Toggle password visibility"
+						                  onClick={this.handleClickShowPassword2}
+						                >
+						                  {this.state.showPassword2 ? <Visibility /> : <VisibilityOff />}
+						                </IconButton>
+						              </InputAdornment>
+						            }
+								   />
 							<span className="red-text">{errors.password2}</span>
 						</FormControl>
 
